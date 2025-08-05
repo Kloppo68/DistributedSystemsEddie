@@ -1,0 +1,126 @@
+services:
+
+  client-1:
+      image: marketplace-client:latest
+      container_name: client-1
+      environment:
+        - INSTANCE_ID=CLIENT-1
+      ports:
+        - "5555:5555"
+        - "5556:5556"
+      networks:
+        - marketplace-network
+      volumes:
+        - ./logs:/app/logs
+        - ./client-docker.properties:/app/client.properties:ro
+  # Seller Services
+  seller-1:
+    image: marketplace-seller:latest
+    container_name: seller-1
+    environment:
+      - INSTANCE_ID=SELLER-1
+      - ENDPOINT=tcp://*:5561
+    ports:
+      - "5561:5561"
+    networks:
+      - marketplace-network
+    volumes:
+      - ./logs:/app/logs
+      - ./seller-docker.properties:/app/seller.properties:ro
+
+  seller-2:
+    image: marketplace-seller:latest
+    container_name: seller-2
+    environment:
+      - INSTANCE_ID=SELLER-2
+      - ENDPOINT=tcp://*:5562
+    ports:
+      - "5562:5562"
+    networks:
+      - marketplace-network
+    volumes:
+      - ./logs:/app/logs
+      - ./seller-docker.properties:/app/seller.properties:ro
+
+  seller-3:
+    image: marketplace-seller:latest
+    container_name: seller-3
+    environment:
+      - INSTANCE_ID=SELLER-3
+      - ENDPOINT=tcp://*:5563
+    ports:
+      - "5563:5563"
+    networks:
+      - marketplace-network
+    volumes:
+      - ./logs:/app/logs
+      - ./seller-docker.properties:/app/seller.properties:ro
+
+  seller-4:
+    image: marketplace-seller:latest
+    container_name: seller-4
+    environment:
+      - INSTANCE_ID=SELLER-4
+      - ENDPOINT=tcp://*:5564
+    ports:
+      - "5564:5564"
+    networks:
+      - marketplace-network
+    volumes:
+      - ./logs:/app/logs
+      - ./seller-docker.properties:/app/seller.properties:ro
+
+  seller-5:
+    image: marketplace-seller:latest
+    container_name: seller-5
+    environment:
+      - INSTANCE_ID=SELLER-5
+      - ENDPOINT=tcp://*:5565
+    ports:
+      - "5565:5565"
+    networks:
+      - marketplace-network
+    volumes:
+      - ./logs:/app/logs
+      - ./seller-docker.properties:/app/seller.properties:ro
+
+  # Marketplace Services
+  marketplace-1:
+    image: marketplace:latest
+    container_name: marketplace-1
+    environment:
+      - SERVICE_TYPE=marketplace
+      - INSTANCE_ID=MARKETPLACE-1
+    depends_on:
+      - seller-1
+      - seller-2
+      - seller-3
+      - seller-4
+      - seller-5
+    networks:
+      - marketplace-network
+    volumes:
+      - ./logs:/app/logs
+      - ./marketplace-docker.properties:/app/marketplace.properties:ro
+
+  marketplace-2:
+    image: marketplace:latest
+    container_name: marketplace-2
+    environment:
+      - SERVICE_TYPE=marketplace
+      - INSTANCE_ID=MARKETPLACE-2
+    depends_on:
+      - seller-1
+      - seller-2
+      - seller-3
+      - seller-4
+      - seller-5
+    networks:
+      - marketplace-network
+    volumes:
+      - ./logs:/app/logs
+      - ./marketplace-docker.properties:/app/marketplace.properties:ro
+
+networks:
+  marketplace-network:
+    driver: bridge

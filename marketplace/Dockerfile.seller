@@ -1,0 +1,10 @@
+FROM eclipse-temurin:24-jre-alpine
+WORKDIR /app
+
+COPY seller.jar ./app.jar
+COPY seller-docker.properties ./seller.properties
+
+# Erstelle Logs-Verzeichnis
+RUN mkdir -p /app/logs
+
+CMD ["sh", "-c", "java -jar app.jar ${INSTANCE_ID} ${ENDPOINT} ${CONFIG_FILE} 2>&1 | tee -a ./logs/${INSTANCE_ID}.log"]

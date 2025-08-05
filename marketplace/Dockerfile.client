@@ -1,0 +1,9 @@
+FROM eclipse-temurin:24-jre-alpine
+WORKDIR /app
+
+COPY client.jar ./app.jar
+COPY client-docker.properties ./client.properties
+
+RUN mkdir -p /app/logs
+
+CMD ["sh", "-c", "java -jar app.jar ${INSTANCE_ID} ${CONFIG_FILE} 2>&1 | tee -a ./logs/${INSTANCE_ID}.log"]

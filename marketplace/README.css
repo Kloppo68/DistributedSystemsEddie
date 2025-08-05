@@ -1,0 +1,4 @@
+/* 3. Enforce manual page breaks */
+.pagebreak {
+  page-break-after: always;
+}
